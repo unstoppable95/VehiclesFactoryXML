@@ -1,4 +1,4 @@
-package piotrpawlaczyk;
+package vehiclesfactory;
 
 public class Car extends Vehicle {
 

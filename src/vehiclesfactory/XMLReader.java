@@ -1,4 +1,4 @@
-package piotrpawlaczyk;
+package vehiclesfactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

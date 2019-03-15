@@ -1,4 +1,4 @@
-package piotrpawlaczyk;
+package vehiclesfactory;
 
 /**
  * class which produces vehicles

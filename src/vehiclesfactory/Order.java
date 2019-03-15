@@ -1,4 +1,4 @@
-package piotrpawlaczyk;
+package vehiclesfactory;
 
 import java.util.ArrayList;
 

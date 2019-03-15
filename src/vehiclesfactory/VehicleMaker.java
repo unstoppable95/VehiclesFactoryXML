@@ -1,4 +1,4 @@
-package piotrpawlaczyk;
+package vehiclesfactory;
 
 /**
  *  class which add vehicle produced by carsFactory class to current order

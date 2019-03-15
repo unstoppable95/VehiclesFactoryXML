@@ -1,4 +1,4 @@
-package piotrpawlaczyk;
+package vehiclesfactory;
 
 /**
  * main abstract class Vehicle which is a supertype of every vehicle in cars factory
