@@ -21,39 +21,20 @@ public class XMLReader {
     /**
      * @return types of vehicles deserialized from xml
      */
-    public ArrayList<String> getData() {
+    public ArrayList<String> getData(Document document) {
         ArrayList<String> orderContent = new ArrayList<>();
 
-        try {
-            //open xml file which contains order
-            File file = new File("SampleOrder.xml");
+        //get all nodes from parsed xml
+        NodeList listOfVehicles = document.getElementsByTagName("item");
 
-            //parse xml from file
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(file);
+        //add every node to list
+        for (int i = 0; i < listOfVehicles.getLength(); i++) {
+            Node node = listOfVehicles.item(i);
 
-            //get all nodes from parsed xml
-            NodeList listOfVehicles = document.getElementsByTagName("item");
-
-            //add every node to list
-            for (int i = 0; i < listOfVehicles.getLength(); i++) {
-                Node node = listOfVehicles.item(i);
-
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) node;
-                    orderContent.add(eElement.getAttribute("type"));
-                }
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) node;
+                orderContent.add(eElement.getAttribute("type"));
             }
-        } catch (IOException ex) {
-            System.out.println("File doesn't exist");
-            ex.printStackTrace();
-        } catch (SAXException ex) {
-            System.out.println("SAX Exception");
-            ex.printStackTrace();
-        } catch (ParserConfigurationException ex) {
-            System.out.println("ParserException");
-            ex.printStackTrace();
         }
 
         return orderContent;

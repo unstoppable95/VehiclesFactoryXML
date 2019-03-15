@@ -1,2 +1,2 @@
-# CarsFactory
-CarsFactory which produce some kinds of vehicles - recruitment task
+# Vehicles
+VehiclesFactory which produce some kinds of vehicles - recruitment task
