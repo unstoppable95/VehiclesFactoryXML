@@ -25,10 +25,11 @@ public class VehicleMaker implements Runnable {
     /**
      * @param vehicleType type of vehicle which we want to produce
      * @param order reference to current order
+     * @param factory reference to vehiclesFactory
      */
-    public VehicleMaker(String vehicleType,Order order){
+    public VehicleMaker(String vehicleType,Order order,VehiclesFactory factory){
         this.vehicleType=vehicleType;
-        this.vehiclesFactory=new VehiclesFactory();
+        this.vehiclesFactory=factory;
         this.order=order;
     }
 

@@ -9,6 +9,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class App {
     /**
@@ -18,7 +21,6 @@ public class App {
 
         //wait for input data
         while (true) {
-
             //read from standard input xml
             Scanner stdin = new Scanner(new BufferedInputStream(System.in));
             String contentXML = "";
@@ -37,11 +39,15 @@ public class App {
         }
     }
 
-    private static void proceedOrder(String contentXML) {
+    /**
+     * @param contentForXML order content from standard input
+     * function which proceed detected order from standard input
+     */
+    private static void proceedOrder(String contentForXML) {
         //change input to document
         Document documentXML = null;
         try {
-            documentXML = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(contentXML)));
+            documentXML = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(contentForXML)));
         } catch (ParserConfigurationException ex) {
             System.out.println("ParserConfigurationException occured");
             ex.printStackTrace();
@@ -60,20 +66,21 @@ public class App {
         //create new order
         Order order = new Order();
 
-        //create thread for every vehicle
-        Thread[] threadArray = new Thread[typesOfVehicles.size()];
+        //create vehiclesFactory
+        VehiclesFactory factory = new VehiclesFactory();
+
+        //create 3 threads for all vehicles in order
+        ExecutorService executor = Executors.newFixedThreadPool(3);
 
         //start threads
         for (int i = 0; i < typesOfVehicles.size(); i++) {
-            VehicleMaker vehicleMaker = new VehicleMaker(typesOfVehicles.get(i), order);
-            threadArray[i] = new Thread(vehicleMaker);
-            threadArray[i].start();
+            executor.submit(new VehicleMaker(typesOfVehicles.get(i), order,factory));
         }
 
-        //wait for complete order
+        executor.shutdown();
+
         try {
-            for (Thread t : threadArray)
-                t.join();
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -81,9 +88,6 @@ public class App {
         //print result
         order.calculateOrderCost();
         System.out.println(order.getTotalCost());
-
-        //interrupt threads
-        for (Thread t : threadArray) t.interrupt();
 
     }
 }
